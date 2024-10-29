@@ -21,7 +21,7 @@ public class Divisao {
         return (int) chave%tamanho;
     }
     
-    public long Inserir(Registro[] lista, int[] tabela){
+    public long Inserir(Registro[] lista, Node[] tabela){
         this.colisao=0;
         long comeco = System.currentTimeMillis();
         for (Registro lista1 : lista) {
@@ -32,10 +32,10 @@ public class Divisao {
         return this.tempoExe;
     }
     
-    public void Inserir(Registro chave, int[] lista){
+    public void Inserir(Registro chave, Node[] lista){
         int hChave = Chave(chave.getChave(), lista.length);
-        if (lista[hChave]==0){
-            lista[hChave]=chave.getValor();
+        if (lista[hChave]==null){
+            lista[hChave] = new Node(chave.getValor());
         }
         else{
             this.colisao++;
@@ -43,7 +43,7 @@ public class Divisao {
         
     }
     
-    public long Buscar(Registro[] lista, int[] tabela){
+    public long Buscar(Registro[] lista, Node[] tabela){
         long comeco = System.currentTimeMillis();
         for (int i=0;i<6;i++) {
             System.out.println(Buscar(lista[i], tabela));
@@ -53,10 +53,10 @@ public class Divisao {
         return this.tempoExe;
     }
     
-    public long Buscar(Registro chave, int[] lista){
+    public long Buscar(Registro chave, Node[] lista){
         int hChave = Chave(chave.getChave(), lista.length);
-        if (lista[hChave] == chave.getValor()){
-            return lista[hChave];
+        if (lista[hChave].getValor() == chave.getValor()){
+            return lista[hChave].getValor();
         }
         return 0;
     }

@@ -18,7 +18,7 @@ public class Hash {
         //Multiplicacao multiplicacao = new Multiplicacao();
         //Dobramento dobramento = new Dobramento();
         //int[] tamanho ={100};
-        int[] tabelaH = new int[100];
+        Node[] tabelaH = new Node[100];
         Registro[] lista = new Registro[1000000];
         for (int i=0; i<lista.length;i++){
             int rand = random.nextInt(100000000);
