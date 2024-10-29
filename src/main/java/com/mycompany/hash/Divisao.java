@@ -21,7 +21,7 @@ public class Divisao {
         return (int) chave%tamanho;
     }
     
-    public long Inserir(Registro[] lista, int[] tabela){
+    public long Inserir(Registro[] lista, Node[] tabela){
         this.colisao=0;
         long comeco = System.currentTimeMillis();
         for (Registro lista1 : lista) {
@@ -32,31 +32,43 @@ public class Divisao {
         return this.tempoExe;
     }
     
-    public void Inserir(Registro chave, int[] lista){
+    public void Inserir(Registro chave, Node[] lista) {
         int hChave = Chave(chave.getChave(), lista.length);
-        if (lista[hChave]==0){
-            lista[hChave]=chave.getValor();
-        }
-        else{
+        if (lista[hChave] == null) {
+            lista[hChave] = new Node(chave.getValor());
+        } else {
+            Node atual = lista[hChave];
+            while (atual.getProximo() != null) {
+                atual = atual.getProximo();
+            }
+            atual.setProximo(new Node(chave.getValor()));
             this.colisao++;
         }
-        
     }
     
-    public long Buscar(Registro[] lista, int[] tabela){
+    public long Buscar(Registro[] lista, Node[] tabela){
         long comeco = System.currentTimeMillis();
         for (int i=0;i<6;i++) {
-            System.out.println(Buscar(lista[i], tabela));
+            System.out.println("Valor Buscado: "+Buscar(lista[i], tabela));
         }
         long fim = System.currentTimeMillis();
         this.tempoExe = fim-comeco;
         return this.tempoExe;
     }
     
-    public long Buscar(Registro chave, int[] lista){
+    public long Buscar(Registro chave, Node[] lista){
         int hChave = Chave(chave.getChave(), lista.length);
-        if (lista[hChave] == chave.getValor()){
-            return lista[hChave];
+        if (lista[hChave].getValor() == chave.getValor()){
+            return lista[hChave].getValor();
+        }
+        else{
+            Node atual = lista[hChave].getProximo();
+            while (atual!=null){
+                if (atual.getValor()==chave.getValor()){
+                    return atual.getValor();
+                }
+                atual = atual.getProximo();
+            }
         }
         return 0;
     }
