@@ -10,7 +10,12 @@ package com.mycompany.hash;
  */
 
 public class Multiplicacao {
-    public Multiplicacao(){}
+    private int colisao;
+    private long tempoExe;
+    public Multiplicacao(){
+        this.tempoExe=0;
+        this.colisao=0;
+    }
 
     public int Chave(long chave, int tamanho){
         //System.out.println(chave);
@@ -20,14 +25,39 @@ public class Multiplicacao {
         //System.out.println(multiplicacao);
         return (int) (multiplicacao%tamanho);
     }
-
-    public void Inserir(Registro chave, int[] lista){
+    
+    public long Inserir(Registro[] lista, Node[] tabela){
+        this.colisao=0;
+        long comeco = System.currentTimeMillis();
+        for (Registro lista1 : lista) {
+            Inserir(lista1, tabela);
+        }
+        long fim = System.currentTimeMillis();
+        this.tempoExe = fim-comeco;
+        return this.tempoExe;
+    }
+    
+     public void Inserir(Registro chave, Node[] lista) {
         int hChave = Chave(chave.getChave(), lista.length);
-        lista[hChave] = chave.getValor();
+        int posicao = hChave;
+
+        while (lista[posicao] != null) {
+            posicao = (posicao + 1) % lista.length;
+            this.colisao++;
+            if (posicao == hChave) {
+                return;
+            }
+        }
+        
+        lista[posicao] = new Node(chave.getValor());
     }
 
-    public long Buscar(Registro chave, int[] lista){
+    public long Buscar(Registro chave, Node[] lista){
         int hChave = Chave(chave.getChave(), lista.length);
-        return lista[hChave];
+        return lista[hChave].getValor();
+    }
+    
+    public long getColisao(){
+        return this.colisao;
     }
 }

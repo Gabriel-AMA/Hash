@@ -16,11 +16,12 @@ public class Node {
         this.valor=valor;
         this.proximo=null;
     }
+    
     public void setValor(int valor){
         this.valor=valor;
     }
-    public void setProximo(Node proximo){
-        this.proximo=proximo;
+    public void setProximo(Node node){
+        this.proximo=node;
     }
     public int getValor(){
         return this.valor;
