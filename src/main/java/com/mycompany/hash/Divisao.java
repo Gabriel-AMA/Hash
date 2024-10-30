@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.mycompany.hash;
-
+import org.jfree.data.category.DefaultCategoryDataset;
 /**
  *
  * @author otaku
@@ -21,7 +21,7 @@ public class Divisao {
         return (int) chave%tamanho;
     }
     
-    public long Inserir(Registro[] lista, Node[] tabela){
+    public void Inserir(Registro[] lista, Node[] tabela, DefaultCategoryDataset dataset){
         this.colisao=0;
         long comeco = System.currentTimeMillis();
         for (Registro lista1 : lista) {
@@ -29,7 +29,8 @@ public class Divisao {
         }
         long fim = System.currentTimeMillis();
         this.tempoExe = fim-comeco;
-        return this.tempoExe;
+        System.out.println("Tempo de Execução Divisão: "+this.tempoExe);
+        dataset.addValue(this.tempoExe, "Divisao", Integer.toString(tabela.length));
     }
     public void Inserir(Registro chave, Node[] lista) {
         int hChave = Chave(chave.getChave(), lista.length);
@@ -70,10 +71,6 @@ public class Divisao {
             }
         }
         return 0;
-    }
-    
-    public long getColisao(){
-        return this.colisao;
     }
 }
 
