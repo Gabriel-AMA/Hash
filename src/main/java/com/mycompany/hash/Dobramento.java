@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.mycompany.hash;
-
+import org.jfree.data.category.DefaultCategoryDataset;
 /**
  *
  * @author otaku
@@ -24,7 +24,7 @@ public class Dobramento {
         //System.out.println(chaveFinal);
         return (int) chaveFinal%tamanho;
     }
-    public long Inserir(Registro[] lista, Node[] tabela){
+    public void Inserir(Registro[] lista, Node[] tabela, DefaultCategoryDataset dataset, DefaultCategoryDataset datasetColisao){
         this.colisao=0;
         long comeco = System.currentTimeMillis();
         for (Registro lista1 : lista) {
@@ -32,7 +32,10 @@ public class Dobramento {
         }
         long fim = System.currentTimeMillis();
         this.tempoExe = fim-comeco;
-        return this.tempoExe;
+        System.out.println("Tempo de Execucao Dobramento: "+this.tempoExe);
+        dataset.addValue(this.tempoExe, "Dobramento", Integer.toString(tabela.length));
+        System.out.println("Colisao Divisao: "+this.colisao);
+        datasetColisao.addValue(this.colisao, "Dobramento", Integer.toString(tabela.length));
     }
     
     public void Inserir(Registro chave, Node[] lista){
@@ -49,14 +52,15 @@ public class Dobramento {
         }
     }
 
-    public long Buscar(Registro[] lista, Node[] tabela){
-        long comeco = System.currentTimeMillis();
+    public void Buscar(Registro[] lista, Node[] tabela, DefaultCategoryDataset dataset){
+        long comeco = System.nanoTime();
         for (int i=0;i<6;i++) {
             System.out.println("Valor Buscado: "+Buscar(lista[i], tabela));
         }
-        long fim = System.currentTimeMillis();
+        long fim = System.nanoTime();
         this.tempoExe = fim-comeco;
-        return this.tempoExe;
+        System.out.println("Tempo de Busca Dobramento: "+this.tempoExe);
+        dataset.addValue(this.tempoExe, "Dobramento", Integer.toString(tabela.length));
     }
     
     public long Buscar(Registro chave, Node[] lista){
@@ -74,8 +78,5 @@ public class Dobramento {
             }
         }
         return 0;
-    }
-    public long getColisao(){
-        return this.colisao;
     }
 }

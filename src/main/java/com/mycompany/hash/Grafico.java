@@ -15,12 +15,29 @@ import org.jfree.data.category.DefaultCategoryDataset;
  * @author otaku
  */
 public class Grafico {
-    public void graficoColisao(DefaultCategoryDataset dataset){
-        JFreeChart barChart = ChartFactory.createBarChart("Numero de Colisões", 
+    public void graficoColisao(DefaultCategoryDataset dataset, int tamanho){
+        JFreeChart barChart = ChartFactory.createBarChart("Numero de Colisões de: " + tamanho, 
                 "Tamanho do Vetor", 
                 "Quantidade de Colisões", 
                 dataset);
         ChartPanel chartPanel = new ChartPanel(barChart);
+        chartPanel.setPreferredSize(new java.awt.Dimension(800, 600));
+        JFrame frame = new JFrame();
+        frame.setContentPane(chartPanel);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
+    }
+    public void graficoBusca(DefaultCategoryDataset dataset, int tamanho){
+        JFreeChart lineChart = ChartFactory.createLineChart(
+                "Tempo de Busca Conjunto de: " + tamanho,
+                "Tamanho da Tabela",
+                "Tempo (ns)",
+                dataset,
+                PlotOrientation.VERTICAL,
+                true, true, false);
+
+        ChartPanel chartPanel = new ChartPanel(lineChart);
         chartPanel.setPreferredSize(new java.awt.Dimension(800, 600));
         JFrame frame = new JFrame();
         frame.setContentPane(chartPanel);

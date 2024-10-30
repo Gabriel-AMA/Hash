@@ -4,6 +4,8 @@
  */
 package com.mycompany.hash;
 
+import org.jfree.data.category.DefaultCategoryDataset;
+
 /**
  *
  * @author otaku
@@ -18,15 +20,12 @@ public class Multiplicacao {
     }
 
     public int Chave(long chave, int tamanho){
-        //System.out.println(chave);
         double fracionaria = chave * 0.618;
-        //System.out.println(fracionaria);
         double multiplicacao = fracionaria*tamanho;
-        //System.out.println(multiplicacao);
         return (int) (multiplicacao%tamanho);
     }
     
-    public long Inserir(Registro[] lista, Node[] tabela){
+    public void Inserir(Registro[] lista, int[] tabela, DefaultCategoryDataset dataset, DefaultCategoryDataset datasetColisao){
         this.colisao=0;
         long comeco = System.currentTimeMillis();
         for (Registro lista1 : lista) {
@@ -34,14 +33,17 @@ public class Multiplicacao {
         }
         long fim = System.currentTimeMillis();
         this.tempoExe = fim-comeco;
-        return this.tempoExe;
+        System.out.println("Tempo de Execucao Multiplicacao: "+this.tempoExe);
+        dataset.addValue(this.tempoExe, "Multiplicacao", Integer.toString(tabela.length));
+        System.out.println("Colisao Divisao: "+this.colisao);
+        datasetColisao.addValue(this.colisao, "MUltiplicacao", Integer.toString(tabela.length));
     }
     
-     public void Inserir(Registro chave, Node[] lista) {
+     public void Inserir(Registro chave, int[] lista) {
         int hChave = Chave(chave.getChave(), lista.length);
         int posicao = hChave;
 
-        while (lista[posicao] != null) {
+        while (lista[posicao] != 0) {
             posicao = (posicao + 1) % lista.length;
             this.colisao++;
             if (posicao == hChave) {
@@ -49,15 +51,25 @@ public class Multiplicacao {
             }
         }
         
-        lista[posicao] = new Node(chave.getValor());
+        lista[posicao] = chave.getValor();
     }
 
-    public long Buscar(Registro chave, Node[] lista){
-        int hChave = Chave(chave.getChave(), lista.length);
-        return lista[hChave].getValor();
+    public void Buscar(Registro[] lista, int[] tabela, DefaultCategoryDataset dataset){
+        long comeco = System.nanoTime();
+        for (int i=0;i<6;i++) {
+            System.out.println("Valor Buscado: "+Buscar(lista[i], tabela));
+        }
+        long fim = System.nanoTime();
+        this.tempoExe = fim-comeco;
+        System.out.println("Tempo de Busca Multiplicacao: "+this.tempoExe);
+        dataset.addValue(this.tempoExe, "Multiplicacao", Integer.toString(tabela.length));
     }
     
-    public long getColisao(){
-        return this.colisao;
+    public long Buscar(Registro chave, int[] lista){
+        int hChave = Chave(chave.getChave(), lista.length);
+        if (lista[hChave] == chave.getValor()){
+            return lista[hChave];
+        }
+        return 0;
     }
 }
