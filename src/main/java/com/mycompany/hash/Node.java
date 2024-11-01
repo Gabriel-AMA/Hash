@@ -9,21 +9,21 @@ package com.mycompany.hash;
  * @author otaku
  */
 public class Node {
-    private int valor;
+    private long valor;
     private Node proximo;
     
-    public Node(int valor){
+    public Node(long valor){
         this.valor=valor;
         this.proximo=null;
     }
     
-    public void setValor(int valor){
+    public void setValor(long valor){
         this.valor=valor;
     }
     public void setProximo(Node node){
         this.proximo=node;
     }
-    public int getValor(){
+    public long getValor(){
         return this.valor;
     }
     public Node getProximo(){

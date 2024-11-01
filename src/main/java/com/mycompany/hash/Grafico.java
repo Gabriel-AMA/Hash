@@ -15,8 +15,8 @@ import org.jfree.data.category.DefaultCategoryDataset;
  * @author otaku
  */
 public class Grafico {
-    public void graficoColisao(DefaultCategoryDataset dataset, int tamanho){
-        JFreeChart barChart = ChartFactory.createBarChart("Numero de Colisões de: " + tamanho, 
+    public void graficoColisao(DefaultCategoryDataset dataset){
+        JFreeChart barChart = ChartFactory.createBarChart("Numero de Colisões de: ", 
                 "Tamanho do Vetor", 
                 "Quantidade de Colisões", 
                 dataset);
@@ -28,9 +28,9 @@ public class Grafico {
         frame.pack();
         frame.setVisible(true);
     }
-    public void graficoBusca(DefaultCategoryDataset dataset, int tamanho){
+    public void graficoBusca(DefaultCategoryDataset dataset){
         JFreeChart lineChart = ChartFactory.createLineChart(
-                "Tempo de Busca Conjunto de: " + tamanho,
+                "Tempo de Busca Conjunto de: ",
                 "Tamanho da Tabela",
                 "Tempo (ns)",
                 dataset,
@@ -45,9 +45,9 @@ public class Grafico {
         frame.pack();
         frame.setVisible(true);
     }
-    public void graficoTempo(DefaultCategoryDataset dataset, int tamanho){
+    public void graficoTempo(DefaultCategoryDataset dataset){
         JFreeChart lineChart = ChartFactory.createLineChart(
-                "Tempo de Execução Conjunto de: " + tamanho,
+                "Tempo de Execução Conjunto de: ",
                 "Tamanho da Tabela",
                 "Tempo (ms)",
                 dataset,
