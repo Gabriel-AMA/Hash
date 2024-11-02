@@ -90,7 +90,7 @@ public class Divisao {
         for (int i = 0; i < this.rodadas * this.rodadas; i++) {
             long comeco = System.nanoTime();
             for (int j = 0; j < 5; j++) {
-                buscar(this.listas[i / this.rodadas][j], this.tabelas[i], this.conjuntos[i / this.rodadas]);
+                buscar(this.listas[i / this.rodadas][j], this.tabelas[i], this.tamanhos[i / this.rodadas]);
             }
             long fim = System.nanoTime();
             this.tempoBusca = fim - comeco;

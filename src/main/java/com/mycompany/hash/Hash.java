@@ -14,7 +14,7 @@ public class Hash {
 
     public static void main(String[] args) {
         int[] seeds = {3,9,21};
-        int[] conjuntos = {1000000,5000000,20000000};
+        int[] conjuntos = {100000,500000,2000000};
         int[] tamanhos ={1000,10000,100000};
         int rodadas =3;
         Registro[][] listas = new Registro[rodadas][];
