@@ -4,67 +4,89 @@
  */
 package com.mycompany.hash;
 
+import java.util.Random;
+import org.jfree.data.category.DefaultCategoryDataset;
+
 /**
  *
  * @author otaku
  */
 public class Divisao {
     private long tempoExe;
+    private long tempoBusca;
     private long colisao;
+    private final Node[][] tabelas;
+    private final int rodadas;
+    private final int[] tamanhos;
 
-    public Divisao(){
-        this.tempoExe=0;
-        this.colisao=0;
+    public Divisao(int rodada, int[] tamanhos) {
+        this.tempoExe = 0;
+        this.tempoBusca = 0;
+        this.colisao = 0;
+        this.tabelas = new Node[rodada*rodada][];
+        this.rodadas = rodada;
+        this.tamanhos=tamanhos;
     }
 
-    public int Chave(long chave, int tamanho){
-        return (int) chave%tamanho;
+    public int chave(long chave, int tamanho) {
+        return (int)chave % tamanho;
     }
-    
-    public long Inserir(Registro[] lista, Node[] tabela){
-        this.colisao=0;
-        long comeco = System.currentTimeMillis();
-        for (Registro lista1 : lista) {
-            Inserir(lista1, tabela);
+
+    public void inserir(Registro[] conjunto, int index, DefaultCategoryDataset tempo, DefaultCategoryDataset dados) {
+        for (int tamanho:this.tamanhos) {
+            this.colisao = 0;
+            this.tempoExe = 0;
+            Node[] tabela = new Node[tamanho];
+            long comeco = System.currentTimeMillis();
+            tabela = inserir(conjunto, tabela, tamanho);
+            long fim = System.currentTimeMillis();
+            this.tempoExe = fim - comeco;
+            this.tabelas[index] = tabela;
+            tempo.addValue(this.tempoExe, "Divisão", "Tabela " + (index));
+            dados.addValue(this.colisao, "Divisão", "Tabela " + (index));
+            index+=this.rodadas;
         }
-        long fim = System.currentTimeMillis();
-        this.tempoExe = fim-comeco;
-        return this.tempoExe;
     }
-    
-    public void Inserir(Registro chave, Node[] lista) {
-        int hChave = Chave(chave.getChave(), lista.length);
-        if (lista[hChave] == null) {
-            lista[hChave] = new Node(chave.getValor());
-        } else {
-            Node atual = lista[hChave];
-            while (atual.getProximo() != null) {
-                atual = atual.getProximo();
+
+    public Node[] inserir(Registro[] conjuntos, Node[] tabela, int tamanho) {
+        for (Registro chave : conjuntos) {
+            int hChave = chave(chave.getChave(), tamanho);
+            if (tabela[hChave] == null) {
+                tabela[hChave] = new Node(chave.getValor());
+            } else {
+                Node atual = tabela[hChave];
+                while (atual.getProximo() != null) {
+                    atual = atual.getProximo();
+                }
+                atual.setProximo(new Node(chave.getValor()));
+                this.colisao++;
             }
-            atual.setProximo(new Node(chave.getValor()));
-            this.colisao++;
+        }
+        return tabela;
+    }
+
+    public void buscar(Registro[] conjunto, DefaultCategoryDataset busca, int index, int tamanho, int seed) {
+        for (int i = index; i < this.rodadas * this.rodadas; i+=this.rodadas) {
+            long comeco = System.nanoTime();
+            for (int j = 0; j < 5; j++) {
+                Random random = new Random(seed);
+                int rand = random.nextInt(tamanho);
+                buscar(conjunto[rand], this.tabelas[i], this.tamanhos[i / this.rodadas]);
+            }
+            long fim = System.nanoTime();
+            this.tempoBusca = fim - comeco;
+            busca.addValue(this.tempoBusca, "Divisão", "Tabela " + i);
         }
     }
-    
-    public long Buscar(Registro[] lista, Node[] tabela){
-        long comeco = System.currentTimeMillis();
-        for (int i=0;i<6;i++) {
-            System.out.println("Valor Buscado: "+Buscar(lista[i], tabela));
-        }
-        long fim = System.currentTimeMillis();
-        this.tempoExe = fim-comeco;
-        return this.tempoExe;
-    }
-    
-    public long Buscar(Registro chave, Node[] lista){
-        int hChave = Chave(chave.getChave(), lista.length);
-        if (lista[hChave].getValor() == chave.getValor()){
+
+    public long buscar(Registro chave, Node[] lista, int tamanho) {
+        int hChave = chave(chave.getChave(), tamanho);
+        if (lista[hChave] != null && lista[hChave].getValor() == chave.getValor()) {
             return lista[hChave].getValor();
-        }
-        else{
+        } else if(lista[hChave] != null && lista[hChave].getValor() != chave.getValor()) {
             Node atual = lista[hChave].getProximo();
-            while (atual!=null){
-                if (atual.getValor()==chave.getValor()){
+            while (atual != null) {
+                if (atual.getValor() == chave.getValor()) {
                     return atual.getValor();
                 }
                 atual = atual.getProximo();
@@ -72,9 +94,4 @@ public class Divisao {
         }
         return 0;
     }
-    
-    public long getColisao(){
-        return this.colisao;
-    }
 }
-

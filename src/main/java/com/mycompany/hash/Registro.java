@@ -17,7 +17,7 @@ public class Registro {
         this.chave=chave;
     }
 
-    public int getValor() {
+    public long getValor() {
         return valor;
     }
 
