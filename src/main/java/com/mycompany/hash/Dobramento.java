@@ -54,17 +54,17 @@ public class Dobramento {
         this.tempoExe = 0;
         int index = 0;
 
-        for (int tamanho : conjuntos) {
+        for (int tamanho : this.conjuntos) {
             gerarDados(tamanho, index);
-            for (int j = 0; j < size; j++) {
+            for (int j = 0; j < this.size; j++) {
                 Node[] tabela = new Node[tamanho];
                 long comeco = System.currentTimeMillis();
-                tabela = inserir(listas[index], tabela, tamanho);
+                tabela = inserir(this.listas[index], tabela, tamanho);
                 long fim = System.currentTimeMillis();
                 this.tempoExe = fim - comeco;
-                tempo.addValue(this.tempoExe, "Dobramento", "Tabela " + (index * size + j + 1));
-                dados.addValue(this.colisao, "Dobramento", "Tabela " + (index * size + j + 1));
-                tabelas[index * size + j] = tabela;
+                tempo.addValue(this.tempoExe, "Dobramento", "Tabela " + (index * this.size + j + 1));
+                dados.addValue(this.colisao, "Dobramento", "Tabela " + (index * this.size + j + 1));
+                this.tabelas[index * this.size + j] = tabela;
             }
             index++;
         }
@@ -89,11 +89,11 @@ public class Dobramento {
 
     public void buscar(DefaultCategoryDataset tempo) {
         for (int i = 0; i < this.size * this.size; i++) {
-            long comeco = System.currentTimeMillis();
+            long comeco = System.nanoTime();
             for (int j = 0; j < 5; j++) {
                 buscar(this.listas[i / this.size][j], this.tabelas[i], this.conjuntos[i / this.size]);
             }
-            long fim = System.currentTimeMillis();
+            long fim = System.nanoTime();
             this.tempoBusca = fim - comeco;
             tempo.addValue(this.tempoBusca, "Dobramento", "Tabela " + (i + 1));
         }
